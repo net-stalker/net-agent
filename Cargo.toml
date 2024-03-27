@@ -1,0 +1,13 @@
+[package]
+name = "net-agent"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+net-config = "0.1.1"
+net-agent-api = "0.1.4"
+pcap = "1.0.0"
+derivative = "2.2.0"
+serde_yaml = "0.9.21" 
