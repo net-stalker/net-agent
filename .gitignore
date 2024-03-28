@@ -1,0 +1,31 @@
+# Compiled files
+/target/
+
+# Dependency directories
+Cargo.lock
+Cargo.toml.orig
+/vendor/
+
+# Generated documentation
+/doc/
+
+# Build output
+/build/
+
+# Editor/IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.tmp
+*.tmp.*
+*.log
+*.vs
+*.txt
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+output/
