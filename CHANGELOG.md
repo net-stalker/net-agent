@@ -8,15 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 <!-- [START AUTO UPDATE] -->
 <!-- Please keep comment here to allow auto-update -->
-## [-05e56d3] - 2024-04-09
+## [-14aea3e] - 2024-04-09
 
-github-actions: added build.yml github actions, updated .gitignore (#2)
+Implement net agent (#1)
 
-* added build.yml github actions, updated .gitignore
-
-* added changelog and github actions for changelog management
-
-* added github flow for pushing net-agent to crates.io
+* implemented initial net-agent
 <!-- [END AUTO UPDATE] -->
 
 ### Added
