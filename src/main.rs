@@ -1,4 +1,5 @@
 use net_agent::{agent::Agent, config::Config};
+use net_agent::args::Cli;
 
 fn main() {
     if cfg!(debug_assertions) {
