@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- [END AUTO UPDATE] -->
 ## [-05e56d3] - 2024-04-09
 
-github-actions: added build.yml github actions, updated .gitignore (#2)
+Implement net agent (#1)
 
 * added build.yml github actions, updated .gitignore
 
