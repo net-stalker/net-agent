@@ -39,22 +39,12 @@ impl Config {
     }
 }
 
+#[derive(Debug, Default)]
 pub struct ConfigBuilder {
     device_name: Option<String>,
     number_packages: Option<i32>,
     buffer_size: Option<i32>,
     output_directory: Option<String>,
-}
-
-impl Default for ConfigBuilder {
-    fn default() -> Self {
-        ConfigBuilder {
-            device_name: None,
-            number_packages: None,
-            buffer_size: None,
-            output_directory: None,
-        }
-    }
 }
 
 impl ConfigBuilder {
