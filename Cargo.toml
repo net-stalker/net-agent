@@ -6,6 +6,7 @@ description = """
 net-agent is a binary crate which you can run to capture network traffic.
 Then all the captured traffic can be loaded to my.netstalker.io for further analysis.
 """
+license = "Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
