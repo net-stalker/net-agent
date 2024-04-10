@@ -2,7 +2,7 @@ name: Update CHANGELOG.md
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "master" ]
 
 
 env:

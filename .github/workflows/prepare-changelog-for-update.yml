@@ -2,7 +2,7 @@ name: Prepare CHANGELOG.md for update
 
 on:
   pull_request:
-    branches: [ "*" ]
+    branches: [ "master" ]
   
 env:
   CARGO_TERM_COLOR: always
