@@ -11,6 +11,8 @@ pub struct Cli {
     pub buffer_size: Option<i32>,
     #[arg(short = 'C', long, conflicts_with_all = ["device_name", "number_packages", "buffer_size"])]
     pub config_file: Option<String>,
+    #[arg(short = 'O', long, default_value = "output", conflicts_with_all = ["config_file"])]
+    pub output_directory: Option<String>,
 }
 
 #[cfg(test)]
@@ -25,26 +27,29 @@ mod tests {
         assert_eq!(cli.number_packages, None);
         assert_eq!(cli.buffer_size, None);
         assert_eq!(cli.config_file, None);
+        assert_eq!(cli.output_directory, Some("output".to_string()));
     }
 
     #[test]
     fn test_cli_custom_values_long() {
-        let cli = Cli::parse_from(&["test", "--device-name", "eth0", "--number-packages", "100", "--buffer-size", "1024"]);
+        let cli = Cli::parse_from(&["test", "--device-name", "eth0", "--number-packages", "100", "--buffer-size", "1024", "--output-directory", "my-output"]);
 
         assert_eq!(cli.device_name, Some("eth0".to_string()));
         assert_eq!(cli.number_packages, Some(100));
         assert_eq!(cli.buffer_size, Some(1024));
         assert_eq!(cli.config_file, None);
+        assert_eq!(cli.output_directory, Some("my-output".to_string()));
     }
 
     #[test]
     fn test_cli_custom_values_short() {
-        let cli = Cli::parse_from(&["test", "-D", "eth0", "-N", "100", "-B", "1024"]);
+        let cli = Cli::parse_from(&["test", "-D", "eth0", "-N", "100", "-B", "1024", "-O", "my-output"]);
 
         assert_eq!(cli.device_name, Some("eth0".to_string()));
         assert_eq!(cli.number_packages, Some(100));
         assert_eq!(cli.buffer_size, Some(1024));
         assert_eq!(cli.config_file, None);
+        assert_eq!(cli.output_directory, Some("my-output".to_string()));
     }
 
     #[test]
@@ -54,7 +59,7 @@ mod tests {
 
     #[test]
     fn test_cli_with_config_and_all_the_other_args() { 
-        assert!(Cli::try_parse_from(&["test", "-d", "eth0", "-n", "100", "-b", "1024", "--config-file", "config.toml"]).is_err());
+        assert!(Cli::try_parse_from(&["test", "-D", "eth0", "-N", "100", "-B", "1024", "--config-file", "config.toml"]).is_err());
     }
 
     #[test]
@@ -66,6 +71,8 @@ mod tests {
         assert_eq!(cli.number_packages, None);
         assert_eq!(cli.buffer_size, None);
         assert_eq!(cli.config_file, Some("config.toml".to_string()));
+        // Actually all the other args must be set from the config file
+        assert_eq!(cli.output_directory, Some("output".to_string()));
     }
 
     #[test]
@@ -77,5 +84,6 @@ mod tests {
         assert_eq!(cli.number_packages, None);
         assert_eq!(cli.buffer_size, None);
         assert_eq!(cli.config_file, Some("config.toml".to_string()));
+        assert_eq!(cli.output_directory, Some("output".to_string()));
     }
 }

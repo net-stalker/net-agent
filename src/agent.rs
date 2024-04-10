@@ -23,7 +23,7 @@ impl Agent {
         Poller::new(capture)
             .with_packet_cnt(self.config.get_number_packages())
             .with_codec(PacketHandler {
-                directory: "output".to_string(),
+                directory: self.config.get_output_directory().to_string(),
             })
             .poll();
     }

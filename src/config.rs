@@ -1,25 +1,20 @@
-use std::fmt::{Debug, Formatter};
+use std::fmt::Debug;
+use std::fmt::Formatter;
 
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 use toml::to_string;
 
 use net_config::NetConfig;
 #[allow(unused_imports)]
 use std::env;
 
-
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
-pub struct Capture {
-    pub(crate) device_name: String,
-    pub(crate) number_packages: i32,
-    pub(crate) buffer_size: i32,
-}
-
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, NetConfig)]
 pub struct Config {
     device_name: String,
     number_packages: i32,
     buffer_size: i32,
+    output_directory: String,
 }
 
 impl Config {
@@ -38,12 +33,17 @@ impl Config {
     pub fn get_buffer_size(&self) -> i32 {
         self.buffer_size
     }
+
+    pub fn get_output_directory(&self) -> &str {
+        &self.output_directory
+    }
 }
 
 pub struct ConfigBuilder {
     device_name: Option<String>,
     number_packages: Option<i32>,
     buffer_size: Option<i32>,
+    output_directory: Option<String>,
 }
 
 impl Default for ConfigBuilder {
@@ -52,6 +52,7 @@ impl Default for ConfigBuilder {
             device_name: None,
             number_packages: None,
             buffer_size: None,
+            output_directory: None,
         }
     }
 }
@@ -72,11 +73,17 @@ impl ConfigBuilder {
         self
     }
 
+    pub fn with_output_directory(mut self, output_directory: String) -> Self {
+        self.output_directory = Some(output_directory);
+        self
+    }
+
     pub fn build(self) -> Config {
         Config {
             device_name: self.device_name.unwrap(),
             number_packages: self.number_packages.unwrap(),
             buffer_size: self.buffer_size.unwrap(),
+            output_directory: self.output_directory.unwrap(),
         }
     }
 }

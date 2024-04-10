@@ -16,6 +16,7 @@ fn main() {
             .with_device_name(cli.device_name.unwrap())
             .with_number_packages(cli.number_packages.unwrap())
             .with_buffer_size(cli.buffer_size.unwrap())
+            .with_output_directory(cli.output_directory.unwrap())
             .build()
     };
 
