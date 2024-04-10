@@ -14,16 +14,16 @@ impl Agent {
     }
 
     pub fn run(self) {
-        let capture = Capture::from_device(self.config.capture.device_name.as_str())
+        let capture = Capture::from_device(self.config.get_device_name())
             .unwrap()
-            .buffer_size(self.config.capture.buffer_size)
+            .buffer_size(self.config.get_buffer_size())
             .open()
             .unwrap();
 
         Poller::new(capture)
-            .with_packet_cnt(self.config.capture.number_packages)
+            .with_packet_cnt(self.config.get_number_packages())
             .with_codec(PacketHandler {
-                directory: "output".to_string(),
+                directory: self.config.get_output_directory().to_string(),
             })
             .poll();
     }
