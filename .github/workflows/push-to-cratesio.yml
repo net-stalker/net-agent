@@ -2,21 +2,24 @@ name: Push crates to crates.io
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "master" ]
 
 jobs:
-    Push-crates:
-        runs-on: ubuntu-latest
-        
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions-rs/toolchain@v1
-              with:
-                  toolchain: stable
-                  override: true
-            - uses: katyo/publish-crates@v2
-              with:
-                  dry-run: ${{ github.event_name != 'push' }}
-                  registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+  Push-crates:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Install dependencies
+      run: sudo apt-get install -y libpcap-dev
+
+    - uses: katyo/publish-crates@v2
+      with:
+        dry-run: ${{ github.event_name != 'push' }}
+        registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
