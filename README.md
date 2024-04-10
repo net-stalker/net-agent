@@ -12,6 +12,40 @@ To install `net-agent`, use Cargo:
 ```shell
 cargo install net-agent
 ```
+
+## Requirements
+Before running `net-agent`, make sure you have the necessary dependencies installed for your operating system:
+
+### Linux
+
+- Ubuntu/Debian:
+    ```shell
+    sudo apt-get install libpcap-dev
+    ```
+
+- Fedora:
+    ```shell
+    sudo dnf install libpcap-devel
+    ```
+- Arch:
+    ```shell
+    sudo pacman -S libpcap
+    ```
+### macOS
+
+- Install Xcode Command Line Tools::
+    ```shell
+    xcode-select --install
+    ```
+- Install libpcap using Homebrew::
+    ```shell
+    brew install libpcap
+    ```
+
+### Windows
+
+- Download and install Npcap (compatible with Windows 7, 8, 10).
+
 ## Usage
 
 You can run `net-agent` with the following command-line options:
@@ -39,6 +73,13 @@ output_directory = "captured_traffic"
 ```
 
 To use the configuration file, pass the `-C`, `--config-file` option with the path to the file.
+
+## Troubleshooting
+
+On linux to run the application with `sudo` it usually needs to run
+```shell
+sudo cp ~/.cargo/bin/net-agent /usr/local/bin/
+```
 
 ## Contributing
 
