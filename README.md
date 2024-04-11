@@ -30,11 +30,13 @@ Before running `net-agent`, make sure you have the necessary dependencies instal
     ```shell
     sudo dnf install libpcap-devel
     ```
+    
 - Arch:
 
     ```shell
     sudo pacman -S libpcap
     ```
+
 ### macOS
 
 - `libpcap` should be installed on Mac OS X by default.
