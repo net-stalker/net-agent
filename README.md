@@ -30,7 +30,7 @@ Before running `net-agent`, make sure you have the necessary dependencies instal
     ```shell
     sudo dnf install libpcap-devel
     ```
-    
+
 - Arch:
 
     ```shell
@@ -81,6 +81,7 @@ To use the configuration file, pass the `-C`, `--config-file` option with the pa
     buffer_size = <BUFFER_SIZE>
     output_directory = <OUTPUT_DIRECTORY>
     ```
+
 - example
 
     ```toml
@@ -110,4 +111,5 @@ If you want to contribute code to the project, please follow these steps:
 Please note that all contributions are subject to review and approval by the project maintainers.
 
 ## License
+
 `net-agent` is licensed under the [Apache License](LICENSE), Version 2.0. See LICENSE for more information.
