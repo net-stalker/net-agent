@@ -24,22 +24,30 @@ fn main() {
     let config = if cli.config_file.is_some() {
         Config::new(cli.config_file.as_ref().unwrap()).build().unwrap()
     } else {
-        Config::cli_builder()
+        let config = Config::cli_builder()
             .with_device_name(cli.device_name.unwrap())
-            .with_number_packages(cli.number_packages.unwrap())
             .with_buffer_size(cli.buffer_size.unwrap())
-            .with_output_directory(cli.output_directory.unwrap())
-            .build()
+            .with_output_directory(cli.output_directory.unwrap());
+        let config = if cli.number_packages.is_some() {
+            config.with_number_packages(cli.number_packages.unwrap())
+        } else {
+            config
+        };
+        config.build()
     };
     
     let agent = Agent::new(config, running.clone());
     let captured_packets_counter = Arc::new(AtomicU64::new(0));
+    let cnt = captured_packets_counter.clone();
 
     pool.execute(move|| captured_packets_counter.store(agent.run(), Ordering::SeqCst));
     
     while running.load(Ordering::SeqCst) { /* do nothing club */ }
     
     pool.join();
+
+    log::warn!("Finished capturing!");
+    log::warn!("Captured {} files", cnt.load(Ordering::SeqCst));
 }
 
 fn init_log() {

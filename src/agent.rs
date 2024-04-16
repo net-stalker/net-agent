@@ -34,15 +34,17 @@ impl Agent {
             return 0;
         };
 
-        Poller::builder()
+        let poller = Poller::builder()
             .with_capture(capture.unwrap())
-            .with_packet_cnt(self.config.get_number_packages())
             .with_handler(PacketHandler {
                 directory: self.config.get_output_directory().to_string(),
             })
-            .with_running(self.running.clone())
-            .build()
-            .poll()
+            .with_running(self.running.clone());
+        let poller = match self.config.get_number_packages() {
+            Some(packet_cnt) => poller.with_packet_cnt(packet_cnt),
+            _ => poller,
+        };
+        poller.build().poll()
     }
 }
 

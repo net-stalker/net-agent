@@ -12,7 +12,7 @@ use std::env;
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq, NetConfig)]
 pub struct Config {
     device_name: String,
-    number_packages: u64,
+    number_packages: Option<u64>,
     buffer_size: i32,
     output_directory: String,
 }
@@ -26,7 +26,7 @@ impl Config {
         &self.device_name
     }
 
-    pub fn get_number_packages(&self) -> u64 {
+    pub fn get_number_packages(&self) -> Option<u64> {
         self.number_packages
     }
 
@@ -71,7 +71,7 @@ impl ConfigBuilder {
     pub fn build(self) -> Config {
         Config {
             device_name: self.device_name.unwrap(),
-            number_packages: self.number_packages.unwrap(),
+            number_packages: self.number_packages,
             buffer_size: self.buffer_size.unwrap(),
             output_directory: self.output_directory.unwrap(),
         }

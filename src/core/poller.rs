@@ -1,21 +1,21 @@
-use std::sync::{atomic::{AtomicBool, Ordering}, Arc};
+use std::{error::Error, sync::{atomic::{AtomicBool, Ordering}, Arc}};
 
 use net_file::translator::packet::Packet;
 use pcap::{Active, Capture};
 
 pub struct Poller<H> {
     capture: Capture<Active>,
-    packet_cnt: u64,
+    packet_cnt: Option<u64>,
     handler: H,
     running: Arc<AtomicBool>,
 }
 
 pub trait Handler {
-    fn decode(&self, packet: Packet);
+    fn decode(&self, packet: Packet) -> Result<(), Box<dyn Error + Send + Sync>>;
 }
 
 impl<H: Handler> Poller<H> {
-    fn new(capture: Capture<Active>, packet_cnt: u64, handler: H, running: Arc<AtomicBool>) -> Self {
+    fn new(capture: Capture<Active>, packet_cnt: Option<u64>, handler: H, running: Arc<AtomicBool>) -> Self {
         Poller {
             capture,
             packet_cnt,
@@ -30,7 +30,8 @@ impl<H: Handler> Poller<H> {
 
     pub fn poll(&mut self) -> u64 {
         let mut cnt = 0_u64;
-        while self.running.load(Ordering::SeqCst) && cnt < u64::MAX && cnt != self.packet_cnt {
+
+        while self.running.load(Ordering::SeqCst) && cnt < u64::MAX && ((self.packet_cnt.is_some() && cnt != *self.packet_cnt.as_ref().unwrap()) || self.packet_cnt.is_none()) {
             let packet = self.capture.next_packet();
             let packet = match packet {
                 Ok(packet) => packet,
@@ -39,8 +40,14 @@ impl<H: Handler> Poller<H> {
                     return cnt;
                 }
             };
+            match self.handler.decode(Packet::from(packet)) {
+                Ok(_) => (),
+                Err(err) => {
+                    log::error!("{err}");
+                    return cnt;
+                }
+            };
             cnt += 1;
-            self.handler.decode(Packet::from(packet));
         }
         cnt
     }
@@ -90,7 +97,7 @@ impl<H: Handler> PollerBuilder<H> {
     pub fn build(self) -> Poller<H> {
         Poller::new(
             self.capture.unwrap(),
-            self.packet_cnt.unwrap(),
+            self.packet_cnt,
             self.handler.unwrap(),
             self.running.unwrap(),
         )
