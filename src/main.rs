@@ -1,4 +1,5 @@
 use clap::Parser;
+use log4rs::config::{load_config_file, Deserializers};
 use net_agent::{agent::Agent, config::Config};
 use net_agent::args::Cli;
 
@@ -6,7 +7,8 @@ fn main() {
     if cfg!(debug_assertions) {
         init_log();
     }
-
+    log::info!("info log for test");
+    log::debug!("debug log for test");
     let cli = Cli::parse();
 
     let config = if cli.config_file.is_some() {
@@ -26,6 +28,7 @@ fn main() {
 
 fn init_log() {
     let config_str = include_str!("log4rs.yml");
-    let config = serde_yaml::from_str(config_str).unwrap();
-    log4rs::init_raw_config(config).unwrap();
+    // let config = serde_yaml::from_str(config_str).unwrap();
+    let config = load_config_file("log4rs.yml", Deserializers::default()).unwrap();
+    let a = 10;
 }
