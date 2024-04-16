@@ -4,10 +4,9 @@ appenders:
   stdout:
     kind: console
     encoder:
-      pattern: "{m}"
+      pattern: "{m}\n"
 
 root:
   level: debug
   appenders:
     - stdout
-    - file

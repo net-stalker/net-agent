@@ -15,7 +15,7 @@ pub struct PacketHandler {
 }
 
 impl crate::core::poller::Handler for PacketHandler {
-    fn decode(&self, _cnt: i32, packet: Packet) {
+    fn decode(&self, packet: Packet) {
         let global_header = GlobalHeader::default();
 
         let mut buf = global_header.to_bytes();

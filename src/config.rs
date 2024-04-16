@@ -9,10 +9,10 @@ use net_config::NetConfig;
 #[allow(unused_imports)]
 use std::env;
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, NetConfig)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq, NetConfig)]
 pub struct Config {
     device_name: String,
-    number_packages: i32,
+    number_packages: u64,
     buffer_size: i32,
     output_directory: String,
 }
@@ -26,7 +26,7 @@ impl Config {
         &self.device_name
     }
 
-    pub fn get_number_packages(&self) -> i32 {
+    pub fn get_number_packages(&self) -> u64 {
         self.number_packages
     }
 
@@ -42,7 +42,7 @@ impl Config {
 #[derive(Debug, Default)]
 pub struct ConfigBuilder {
     device_name: Option<String>,
-    number_packages: Option<i32>,
+    number_packages: Option<u64>,
     buffer_size: Option<i32>,
     output_directory: Option<String>,
 }
@@ -53,7 +53,7 @@ impl ConfigBuilder {
         self
     }
 
-    pub fn with_number_packages(mut self, number_packages: i32) -> Self {
+    pub fn with_number_packages(mut self, number_packages: u64) -> Self {
         self.number_packages = Some(number_packages);
         self
     }
