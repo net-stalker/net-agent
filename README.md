@@ -3,7 +3,7 @@
 [![Crates.io](https://img.shields.io/crates/v/net-agent.svg)](https://crates.io/crates/net-agent)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Net-agent is a stand-alone binary crate within the Net Stalker project that allows you to capture network traffic, which can then be uploaded to [my.netstalker.io](https://my.netstalker.io/) for further analysis.
+Net-agent is a stand-alone binary crate within the Net Stalker project that allows you to capture network traffic, which then can be uploaded to [my.netstalker.io](https://my.netstalker.io/) for further analysis.
 
 ## Installation
 
