@@ -3,6 +3,7 @@ use std::fmt::Formatter;
 
 use serde::Deserialize;
 use serde::Serialize;
+use tabled::Tabled;
 use toml::to_string;
 
 use net_config::NetConfig;
@@ -75,5 +76,27 @@ impl ConfigBuilder {
             buffer_size: self.buffer_size.unwrap(),
             output_directory: self.output_directory.unwrap(),
         }
+    }
+}
+
+impl Tabled for Config {
+    const LENGTH: usize = 4;
+
+    fn fields(&self) -> Vec<std::borrow::Cow<'_, str>> {
+        vec![
+            self.device_name.as_str().into(),
+            self.number_packages.map(|n| n.to_string()).unwrap_or_else(|| "Infinite".to_string()).into(),
+            self.buffer_size.to_string().into(),
+            self.output_directory.as_str().into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "Device Name".into(),
+            "Number of Packages".into(),
+            "Buffer Size".into(),
+            "Output Directory".into(),
+        ]
     }
 }

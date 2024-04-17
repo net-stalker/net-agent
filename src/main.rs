@@ -7,6 +7,7 @@ use clap::Parser;
 use log4rs::config::{load_config_file, Deserializers};
 use net_agent::{agent::Agent, config::Config};
 use net_agent::args::Cli;
+use tabled::Table;
 use threadpool::ThreadPool;
 
 fn main() {
@@ -35,7 +36,8 @@ fn main() {
         };
         config.build()
     };
-    
+    log::warn!("Loaded config");
+    log::warn!("{}", Table::new(vec![config.clone()]).to_string());
     let agent = Agent::new(config, running.clone());
     let captured_packets_counter = Arc::new(AtomicU64::new(0));
     let cnt = captured_packets_counter.clone();

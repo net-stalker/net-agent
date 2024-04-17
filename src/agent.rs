@@ -22,6 +22,7 @@ impl Agent {
     }
 
     pub fn run(&self) -> u64 {
+        log::info!("Starting capturing on {}", self.config.get_device_name());
         let capture = Capture::from_device(self.config.get_device_name());
         if capture.is_err() {
             log::error!("Couldn't open a capture handle for a device: {}\nProvide a valid device", capture.err().unwrap());
