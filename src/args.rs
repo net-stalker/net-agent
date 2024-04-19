@@ -6,7 +6,7 @@ pub struct Cli {
     #[arg(short = 'D', long, conflicts_with_all = ["config_file"])]
     pub device_name: Option<String>,
     #[arg(short = 'N', long, conflicts_with_all = ["config_file"])]
-    pub number_packages: Option<i32>,
+    pub number_packages: Option<u64>,
     #[arg(short = 'B', long, conflicts_with_all = ["config_file"])]
     pub buffer_size: Option<i32>,
     #[arg(short = 'C', long, conflicts_with_all = ["device_name", "number_packages", "buffer_size"])]
