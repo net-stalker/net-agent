@@ -3,16 +3,17 @@ use std::fmt::Formatter;
 
 use serde::Deserialize;
 use serde::Serialize;
+use tabled::Tabled;
 use toml::to_string;
 
 use net_config::NetConfig;
 #[allow(unused_imports)]
 use std::env;
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, NetConfig)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq, NetConfig)]
 pub struct Config {
     device_name: String,
-    number_packages: i32,
+    number_packages: Option<u64>,
     buffer_size: i32,
     output_directory: String,
 }
@@ -26,7 +27,7 @@ impl Config {
         &self.device_name
     }
 
-    pub fn get_number_packages(&self) -> i32 {
+    pub fn get_number_packages(&self) -> Option<u64> {
         self.number_packages
     }
 
@@ -42,7 +43,7 @@ impl Config {
 #[derive(Debug, Default)]
 pub struct ConfigBuilder {
     device_name: Option<String>,
-    number_packages: Option<i32>,
+    number_packages: Option<u64>,
     buffer_size: Option<i32>,
     output_directory: Option<String>,
 }
@@ -53,7 +54,7 @@ impl ConfigBuilder {
         self
     }
 
-    pub fn with_number_packages(mut self, number_packages: i32) -> Self {
+    pub fn with_number_packages(mut self, number_packages: u64) -> Self {
         self.number_packages = Some(number_packages);
         self
     }
@@ -71,9 +72,31 @@ impl ConfigBuilder {
     pub fn build(self) -> Config {
         Config {
             device_name: self.device_name.unwrap(),
-            number_packages: self.number_packages.unwrap(),
+            number_packages: self.number_packages,
             buffer_size: self.buffer_size.unwrap(),
             output_directory: self.output_directory.unwrap(),
         }
+    }
+}
+
+impl Tabled for Config {
+    const LENGTH: usize = 4;
+
+    fn fields(&self) -> Vec<std::borrow::Cow<'_, str>> {
+        vec![
+            self.device_name.as_str().into(),
+            self.number_packages.map(|n| n.to_string()).unwrap_or_else(|| "Infinite".to_string()).into(),
+            self.buffer_size.to_string().into(),
+            self.output_directory.as_str().into(),
+        ]
+    }
+
+    fn headers() -> Vec<std::borrow::Cow<'static, str>> {
+        vec![
+            "Device Name".into(),
+            "Number of Packages".into(),
+            "Buffer Size".into(),
+            "Output Directory".into(),
+        ]
     }
 }

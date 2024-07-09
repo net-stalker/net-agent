@@ -1,6 +1,6 @@
 [package]
 name = "net-agent"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = """
 net-agent is a binary crate which you can run to capture network traffic.
@@ -26,3 +26,7 @@ log4rs = "1.2.0"
 uuid = { version = "1.8.0", features = ["v4"] }
 directories = "5.0.1"
 clap = { version = "4.5.4", features = ["derive"] }
+ctrlc = { version = "3.4.4", features = ["termination"] }
+threadpool = "1.8.1"
+thiserror = "1.0.58"
+tabled = "0.15.0"
