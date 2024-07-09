@@ -1,6 +1,6 @@
 [package]
 name = "net-agent"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = """
 net-agent is a binary crate which you can run to capture network traffic.
