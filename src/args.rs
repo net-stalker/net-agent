@@ -15,6 +15,35 @@ pub struct Cli {
     pub output_directory: Option<String>,
 }
 
+impl Cli {
+    pub fn is_valid(&self) -> bool {
+        self.config_file.is_none() &&
+        (
+            self.buffer_size.is_none() ||
+            self.device_name.is_none() ||
+            self.number_packages.is_none()
+        )
+    }
+
+    pub fn missing_fields_message(&self) -> String {
+        let mut missing_fields = Vec::new();
+
+        if self.buffer_size.is_none() {
+            missing_fields.push("buffer_size");
+        }
+        if self.device_name.is_none() {
+            missing_fields.push("device_name");
+        }
+        if self.number_packages.is_none() {
+            missing_fields.push("number_packages");
+        }
+
+        format!("Missing fields: {}. Provide a path to a valid config file or command line arguments for net-agent.\nYou can use config_file to set all these arguments.\nSee --help",
+                missing_fields.join(", "))
+    }
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
