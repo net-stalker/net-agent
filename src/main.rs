@@ -23,6 +23,11 @@ fn main() {
     read_log4rs_from_temp_dir();
     let cli = Cli::parse();
 
+    if cli.is_valid() {
+        log::error!("{}", cli.missing_fields_message());
+        return;
+    }
+
     let config = if cli.config_file.is_some() {
         Config::new(cli.config_file.as_ref().unwrap()).build().unwrap()
     } else {
