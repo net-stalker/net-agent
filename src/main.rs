@@ -69,7 +69,8 @@ fn read_log4rs_from_temp_dir() {
         format!("{}/{}", d.path().display(), LOG4RS_FILE_NAME),
         Deserializers::default()
     ).expect("excepted to build a config for log4rs");
-
+    
+    #[allow(unexpected_cfgs)]
     if !cfg!(debug_assertion) {
         config.root_mut().set_level(log::LevelFilter::Info);
     }
