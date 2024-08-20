@@ -8,6 +8,7 @@ use log4rs::config::{load_config_file, Deserializers};
 use net_agent::{agent::Agent, config::Config};
 use net_agent::args::Cli;
 use tabled::Table;
+use temp_dir::TempDir;
 use threadpool::ThreadPool;
 
 fn main() {
@@ -19,8 +20,13 @@ fn main() {
         r.store(false, Ordering::SeqCst);
     }).expect("Error setting Ctrl+C handler");
 
-    init_log();
+    read_log4rs_from_temp_dir();
     let cli = Cli::parse();
+
+    if cli.is_config_missing() {
+        log::error!("{}", cli.missing_fields_message());
+        return;
+    }
 
     let config = if cli.config_file.is_some() {
         Config::new(cli.config_file.as_ref().unwrap()).build().unwrap()
@@ -52,9 +58,19 @@ fn main() {
     log::warn!("Captured {} files", cnt.load(Ordering::SeqCst));
 }
 
-fn init_log() {
-    let mut config = load_config_file("log4rs.yml", Deserializers::default()).unwrap();
-    if !cfg!(debug_assertions) {
+fn read_log4rs_from_temp_dir() {
+    const LOG4RS_FILE_NAME: &str = "log4rs.yml";
+    let d = TempDir::new().unwrap();
+    let raw_log_config = d.child(LOG4RS_FILE_NAME);
+    let bytes = include_bytes!("../log4rs.yml");
+    std::fs::write(raw_log_config, bytes)
+        .expect("valid log config is expected. Error while writing log config to a temporary file");
+    let mut config = load_config_file(
+        format!("{}/{}", d.path().display(), LOG4RS_FILE_NAME),
+        Deserializers::default()
+    ).expect("excepted to build a config for log4rs");
+
+    if !cfg!(debug_assertion) {
         config.root_mut().set_level(log::LevelFilter::Info);
     }
     log4rs::config::init_config(config).unwrap();
