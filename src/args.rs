@@ -16,7 +16,7 @@ pub struct Cli {
 }
 
 impl Cli {
-    pub fn is_valid(&self) -> bool {
+    pub fn is_config_missing(&self) -> bool {
         self.config_file.is_none() &&
         (
             self.buffer_size.is_none() ||
